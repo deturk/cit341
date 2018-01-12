@@ -3,7 +3,7 @@ This repository is dedicated to Cisco IOS configuration written for the CIT 341 
 
 The course provided the following devices to each student with direct, physical, and remote access:
 <ul>
-  <li>Cisco 2511 Integrated Services Router - to be used as the Core Layer</li>
+  <li>Cisco 2811 Integrated Services Router - to be used as the Core Layer</li>
   <li>Cisco Catalyst 3560 PoE Switch - to be used as the Distribution Layer</li>
   <li>Cisco Catalyst 3550 Switch - to be used as part of the Access Layer</li>
   <li>Cisco Catalyst 2950 Switch - to be used as part of the Access Layer</li>
