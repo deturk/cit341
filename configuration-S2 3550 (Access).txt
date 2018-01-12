@@ -1,0 +1,251 @@
+Current configuration : 5472 bytes
+!
+! Last configuration change at 01:47:59 mountai Tue Jul 11 2017
+! NVRAM config last updated at 01:48:02 mountai Tue Jul 11 2017
+!
+version 12.1
+no service pad
+service timestamps debug uptime
+service timestamps log uptime
+service password-encryption
+!
+hostname Aspen-S2
+!
+enable secret 5 $1$eHIC$yg7ld9DdeNkYQPnkCz.uh1
+!
+clock timezone mountai -7
+clock summer-time mountai recurring
+ip subnet-zero
+!
+ip domain-name aspen
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+!
+interface Port-channel2
+ description To Aspen-S1 3560 (Distribution)
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 599
+ switchport mode trunk
+ speed 100
+ duplex full
+!
+interface FastEthernet0/1
+ switchport access vlan 510
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+!
+interface FastEthernet0/2
+ switchport access vlan 520
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+!
+interface FastEthernet0/3
+ switchport access vlan 530
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+!
+interface FastEthernet0/4
+ description "Requires External Power for VoIP"
+ switchport access vlan 540
+ switchport mode access
+ switchport voice vlan 540
+ spanning-tree portfast
+!
+interface FastEthernet0/5
+ switchport access vlan 550
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+!
+interface FastEthernet0/6
+ switchport access vlan 560
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+!
+interface FastEthernet0/7
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/8
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/9
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/10
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/11
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/12
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!         
+interface FastEthernet0/13
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/14
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/15
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/16
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/17
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/18
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/19
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/20
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/21
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 599
+ switchport mode trunk
+ speed 100
+ duplex full
+ channel-group 2 mode on
+!
+interface FastEthernet0/22
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 599
+ switchport mode trunk
+ speed 100
+ duplex full
+ channel-group 2 mode on
+!
+interface FastEthernet0/23
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface FastEthernet0/24
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface GigabitEthernet0/1
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown 
+!
+interface GigabitEthernet0/2
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan550
+ ip address 172.16.5.243 255.255.255.248
+!
+ip default-gateway 172.16.5.241
+ip classless
+ip http server
+!
+access-list 1 permit 172.16.5.240 0.0.0.7
+banner motd ^C
+Authorized Access Only
+BYU-Idaho CIT-341 Aspen-S2 3550 (Access)
+Group 5 - Calvin Milliron^C
+!
+line con 0
+ password 7 110A101144465A
+ logging synchronous
+ login
+line vty 0 4
+ access-class 1 in
+ password 7 110A101144465A
+ logging synchronous
+ login
+line vty 5 15
+ access-class 1 in
+ password 7 110A101144465A
+ logging synchronous
+ login
+!
+ntp clock-period 17180299
+ntp server 172.16.5.241
+!
+end

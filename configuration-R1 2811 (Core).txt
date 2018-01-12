@@ -1,0 +1,266 @@
+Current configuration : 4650 bytes
+!
+! Last configuration change at 01:45:42 mountai Tue Jul 11 2017
+! NVRAM config last updated at 01:45:46 mountai Tue Jul 11 2017
+!
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname Aspen-R1
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$Zc.V$GtBlnQHFRLyOZIEdAiAs61
+!
+no aaa new-model
+clock timezone mountai -7
+clock summer-time mountai recurring
+dot11 syslog
+!
+!         
+ip cef
+no ip dhcp use vrf connected
+ip dhcp excluded-address 172.16.5.1
+ip dhcp excluded-address 172.16.5.129
+ip dhcp excluded-address 172.16.5.193
+ip dhcp excluded-address 172.16.5.225
+ip dhcp excluded-address 172.16.5.241 172.16.5.244
+ip dhcp excluded-address 172.16.5.249
+!
+ip dhcp pool ENGINEERING
+   network 172.16.5.0 255.255.255.128
+   default-router 172.16.5.1 
+   dns-server 172.16.5.1 
+!
+ip dhcp pool ACCOUNTING
+   network 172.16.5.128 255.255.255.192
+   default-router 172.16.5.129 
+   dns-server 172.16.5.129 
+!
+ip dhcp pool MANAGEMENT
+   network 172.16.5.192 255.255.255.224
+   default-router 172.16.5.193 
+   dns-server 172.16.5.193 
+!
+ip dhcp pool VoIP
+   network 172.16.5.224 255.255.255.240
+   default-router 172.16.5.225 
+   dns-server 172.16.5.225 
+   option 150 ip 172.16.99.20 
+!
+ip dhcp pool ADMIN
+   network 172.16.5.240 255.255.255.248
+   default-router 172.16.5.241 
+   dns-server 172.16.5.241 
+!
+ip dhcp pool SPARE
+   network 172.16.5.248 255.255.255.248
+   default-router 172.16.5.249 
+   dns-server 172.16.5.249 
+!
+!
+ip domain name aspen
+!
+multilink bundle-name authenticated
+!
+!         
+voice-card 0
+ no dspfarm
+!
+!
+!
+voice service voip 
+ allow-connections h323 to h323
+ allow-connections h323 to sip
+ allow-connections sip to sip
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!         
+!
+!
+!
+!
+username admin secret 5 $1$4Uuo$FwrtxPTK4yJCpdOQPzAIu1
+archive
+ log config
+  hidekeys
+! 
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ no ip address
+ hold-queue 150 in
+!
+interface Port-channel1.510
+ description ENGINEERING
+ encapsulation dot1Q 510
+ ip address 172.16.5.1 255.255.255.128
+!
+interface Port-channel1.520
+ description ACCOUNTING
+ encapsulation dot1Q 520
+ ip address 172.16.5.129 255.255.255.192
+!
+interface Port-channel1.530
+ description MANAGEMENT
+ encapsulation dot1Q 530
+ ip address 172.16.5.193 255.255.255.224
+!
+interface Port-channel1.540
+ description VoIP
+ encapsulation dot1Q 540
+ ip address 172.16.5.225 255.255.255.240
+ h323-gateway voip interface
+ h323-gateway voip id GK-99 ipaddr 172.16.99.3 1718
+ h323-gateway voip tech-prefix 1
+!
+interface Port-channel1.550
+ description ADMIN
+ encapsulation dot1Q 550
+ ip address 172.16.5.241 255.255.255.248
+!
+interface Port-channel1.560
+ description SPARE
+ encapsulation dot1Q 560
+ ip address 172.16.5.249 255.255.255.248
+!
+interface Port-channel1.599
+ description NATIVE
+ encapsulation dot1Q 599 native
+!
+interface FastEthernet0/0
+ no ip address
+ duplex full
+ speed 100
+ channel-group 1
+!
+interface FastEthernet0/1
+ no ip address
+ duplex full
+ speed 100
+ channel-group 1
+!         
+interface Serial0/0/0
+ description Connection to HQ
+ ip address 71.218.253.202 255.255.255.252
+ ip access-group 100 in
+ encapsulation frame-relay
+ frame-relay interface-dlci 599
+!
+interface Serial0/0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/1/0
+ no ip address
+ shutdown
+!
+router eigrp 100
+ network 71.0.0.0
+ network 172.16.0.0
+ no auto-summary
+!
+ip forward-protocol nd
+!         
+!
+ip http server
+no ip http secure-server
+!
+access-list 1 permit 172.16.5.240 0.0.0.7
+access-list 100 permit icmp any any echo-reply
+access-list 100 deny   icmp any any
+access-list 100 deny   tcp any any eq 22
+access-list 100 permit ip any any
+access-list 100 permit tcp any any
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!         
+!
+dial-peer voice 540 voip
+ destination-pattern [2-9].........
+ session target ras
+ session transport udp
+!
+!
+gateway 
+ timer receive-rtp 1200
+!
+!
+!
+telephony-service
+ no auto-reg-ephone
+ load 7911 cmterm-7911_7906-sccp.9-4-2S
+ max-ephones 30
+ max-dn 30
+ ip source-address 172.16.5.225 port 2000
+ max-conferences 8 gain -6
+ transfer-system full-consult
+ create cnf-files version-stamp 7960 Jul 10 2017 20:17:11
+!
+!         
+ephone-dn  2
+ number 9709251234
+ name Calvin Milliron
+!
+!
+ephone  4
+ device-security-mode none
+ mac-address 0817.35D5.CE7C
+ type 7911
+ button  1:2
+!
+!
+banner motd ^C
+Authorized Access Only
+BYU-Idaho CIT-341 Aspen-R1 2811 (Core)
+Group 5 - Calvin Milliron^C
+!
+line con 0
+ password 7 121A0C03415F5D
+ logging synchronous
+ login
+line aux 0
+ privilege level 15
+ password 7 121A0C03415F5D
+ login
+line vty 0 4
+ access-class 1 in
+ password 7 14141B1F5F507B
+ logging synchronous
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+ntp master
+!
+end
